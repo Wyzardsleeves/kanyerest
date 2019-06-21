@@ -31,3 +31,34 @@
     transform: rotate(360deg);
   }
 }
+
+/* Project ---------- */
+
+.head-half{
+  display: inline-block;
+  width: 50%;
+}
+
+.head-half img{
+  padding: 0;
+  width: 100px;
+  margin: 0;
+  text-align: left;
+  display: inline-block;
+}
+
+.head-half a{
+  color: #333333;
+}
+
+.head-half i{
+  padding: 0;
+  margin: 0;
+  font-size: 30px;
+  height: 50%;
+  font-size: 40px;
+  position: relative;
+  top: -10px;
+  text-align: right;
+  display: inline-block;
+}
