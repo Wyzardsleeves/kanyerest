@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import loading from '../assets/images/transparent-background-loading.gif';
-import vector from '../assets/images/kanye2-512.png';
+import vector from '../assets/images/kanye.png';
 
 class Quote extends Component{
   constructor(props){
