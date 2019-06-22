@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import loading from '../assets/images/transparent-background-loading.gif';
+import vector from '../assets/images/kanye2-512.png';
 
 class Quote extends Component{
   constructor(props){
@@ -155,6 +156,9 @@ class Quote extends Component{
                     <table>
                       <tbody>
                         <tr>
+                          <td>
+                            <img className="kanye" src={vector} />
+                          </td>
                           <td>
                             <h5 className="">
                               <i class="fas fa-quote-left quote-icon"></i>
