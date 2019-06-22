@@ -62,3 +62,24 @@
   text-align: right;
   display: inline-block;
 }
+
+.show-btn{
+  margin: 10px;
+}
+
+.quote:hover{
+  cursor: pointer;
+}
+
+.quote .heart{
+  color: lightgrey;
+}
+
+.quote:hover .heart{
+  color: #4286f4;
+}
+
+.quote-icon{
+  margin: 10px;
+  color: grey;
+}
