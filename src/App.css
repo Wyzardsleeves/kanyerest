@@ -87,3 +87,20 @@
 .kanye{
   height: 150px;
 }
+
+.sort-funcs{
+  display: inline-block;
+}
+
+.sort-funcs h5{
+  display: inline-block;
+}
+
+.stubborn{
+  display: inline-block;
+
+}
+
+.sort-funcs li{
+  display: inline-block;
+}

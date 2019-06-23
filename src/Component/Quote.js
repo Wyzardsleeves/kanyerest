@@ -8,9 +8,10 @@ class Quote extends Component{
     super(props);
     this.state = {
       quoteArr: [],
+      listArr: [],
       favList: [],
       total: 0,
-      show: "quotes"
+      show: "quotes",
     }
   }
 
@@ -20,6 +21,7 @@ class Quote extends Component{
 
   componentDidMount(){
     this.randNum();
+    this.getNewList();
   }
 
   randNum = () => {
@@ -104,6 +106,8 @@ class Quote extends Component{
       newArray.push(response.data.quote);
       console.log(newArray);
       this.setState({quoteArr: newArray})
+      this.setState({listArr: this.state.quoteArr.reverse().slice(0, 10)})
+
       return axios.get('https://api.kanye.rest');
     })
     .catch((error) => {
@@ -111,6 +115,11 @@ class Quote extends Component{
     })
     console.log(this.state.quoteArr.length + " num quotes");
     console.log(this.state.total + " num total");
+  }
+
+  getNewList = () => {
+    let currentList = this.state.quoteArr;
+    this.setState({listArr: currentList.slice(0, 10)})
   }
 
   pushFav = (e, quote) => {
@@ -133,14 +142,42 @@ class Quote extends Component{
     this.setState({show: "favorites"})
   }
 
+  spitList = () => {
+    console.log(this.state.listArr);
+  }
+
+  sortFuncDesc = () => {
+    let newArray = this.state.listArr;
+    this.setState({listArr: newArray.sort(function(a, b){
+        return b.length - a.length;
+      })
+    })
+  }
+
+  sortFuncAsc = () => {
+    let newArray = this.state.listArr;
+    this.setState({listArr: newArray.sort(function(a, b){
+        return a.length - b.length;
+      })
+    })
+  }
+
+  changeSort = (e, pass) => {
+    e.preventDefault();
+    this.setState({show: pass})
+    console.log(pass);
+  }
+
+
+
   render(){
     let tempArr = this.state.quoteArr;
     let tempFav = this.state.favList;
     return(
       <div className="quote-stuff container">
-        <h3>Kanye Quotes</h3>
+        <h3 onClick={this.sortFuncAsc}>Kanye Quotes</h3>
         <button className="btn btn-large blue show-btn" onClick={this.showQuotes}>Go to Quotes</button>
-        <button className="btn btn-large blue show-btn" onClick={this.showFav}>Go to Favorites</button>
+        <button className="btn btn-large blue show-btn" onClick={this.showFav}>Go to Favorites ({this.state.favList.length})</button>
         <div className="card-panel grey lighten-4">
           {this.state.quoteArr.length < this.state.total &&
             <img src={loading} alt="Loading...."/>
@@ -149,8 +186,15 @@ class Quote extends Component{
           <div>
             <h4>Get Quotes!</h4>
             <button className="btn green" onClick={this.getNewArray}>Generate</button><br/>
+            <div>
+              <ul className="sort-funcs">
+                <li><h5>Sort Order: </h5></li>
+                <li><h5 onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
+                <li><h5 onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
+              </ul>
+            </div>
             <ul>
-              {this.state.quoteArr.slice(tempArr.length - 10, tempArr.length).map((quote) =>
+              {this.state.listArr.map((quote) =>
                 <li className="quote" title="Click to favorite" key={tempArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
                   <div className="card-panel">
                     <table>
@@ -161,9 +205,9 @@ class Quote extends Component{
                           </td>
                           <td>
                             <h5 className="">
-                              <i class="fas fa-quote-left quote-icon"></i>
+                              <i className="fas fa-quote-left quote-icon"></i>
                                {quote}
-                              <i class="fas fa-quote-right quote-icon"></i>
+                              <i className="fas fa-quote-right quote-icon"></i>
                             </h5>
                           </td>
                           <td>
@@ -183,6 +227,104 @@ class Quote extends Component{
             </ul>
             </div>
           }
+
+          {/* Sorted conditional renderings */}
+          {this.state.quoteArr.length >= this.state.total && this.state.show === "desc" &&
+          <div>
+            <h4>Get Quotes!</h4>
+            <button className="btn green" onClick={this.getNewArray}>Generate</button><br/>
+            <div>
+              <ul className="sort-funcs">
+                <li><h5>Sort Order: </h5></li>
+                <li><h5 onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
+                <li><h5 onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
+              </ul>
+            </div>
+            <ul>
+              {this.state.listArr.sort(function(a, b){
+                  return b.length - a.length;
+                }).map((quote) =>
+                <li className="quote" title="Click to favorite" key={tempArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
+                  <div className="card-panel">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <img className="kanye" src={vector} />
+                          </td>
+                          <td>
+                            <h5 className="">
+                              <i className="fas fa-quote-left quote-icon"></i>
+                               {quote}
+                              <i className="fas fa-quote-right quote-icon"></i>
+                            </h5>
+                          </td>
+                          <td>
+                            {tempFav.indexOf(quote) > -1 &&
+                              <h4><i className="right fas fa-heart blue-text text-lighten-1 heart"></i></h4>
+                            }
+                            {tempFav.indexOf(quote) < 0 &&
+                              <h4><i className="fav right far fa-heart heart"></i></h4>
+                            }
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </li>
+              )}
+            </ul>
+            </div>
+          }
+          {this.state.quoteArr.length >= this.state.total && this.state.show === "asc" &&
+          <div>
+            <h4>Get Quotes!</h4>
+            <button className="btn green" onClick={this.getNewArray}>Generate</button><br/>
+            <div className="sort-funcs">
+              <ul className="sort-funcs">
+                <li><h5>Sort Order: </h5></li>
+                <li><h5 onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
+                <li><h5 onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
+              </ul>
+            </div>
+            <ul>
+              {this.state.listArr.sort(function(a, b){
+                  return a.length - b.length;
+                }).map((quote) =>
+                <li className="quote" title="Click to favorite" key={tempArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
+                  <div className="card-panel">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <img className="kanye" src={vector} />
+                          </td>
+                          <td>
+                            <h5 className="">
+                              <i className="fas fa-quote-left quote-icon"></i>
+                               {quote}
+                              <i className="fas fa-quote-right quote-icon"></i>
+                            </h5>
+                          </td>
+                          <td>
+                            {tempFav.indexOf(quote) > -1 &&
+                              <h4><i className="right fas fa-heart blue-text text-lighten-1 heart"></i></h4>
+                            }
+                            {tempFav.indexOf(quote) < 0 &&
+                              <h4><i className="fav right far fa-heart heart"></i></h4>
+                            }
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </li>
+              )}
+            </ul>
+            </div>
+          }
+          {/* ----------------------------- */}
+
           {this.state.show === "favorites" &&
             <div>
               <h4>Favorites</h4>
@@ -195,14 +337,14 @@ class Quote extends Component{
                           <tr>
                             <td>
                               <h5 className="">
-                                <i class="fas fa-quote-left quote-icon"></i>
+                                <i className="fas fa-quote-left quote-icon"></i>
                                  {quote}
-                                <i class="fas fa-quote-right quote-icon"></i>
+                                <i className="fas fa-quote-right quote-icon"></i>
                               </h5>
                             </td>
                             <td>
                               {tempFav.indexOf(quote) > -1 &&
-                                <h5><i class="right fas fa-heart blue-text text-lighten-2"></i></h5>
+                                <h5><i className="right fas fa-heart blue-text text-lighten-2"></i></h5>
                               }
                             </td>
                           </tr>
