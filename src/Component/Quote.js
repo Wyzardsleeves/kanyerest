@@ -19,9 +19,12 @@ class Quote extends Component{
     this.getNewArray();
     this.getNewList();
 
+
+
   }
 
   componentDidMount(){
+
   }
 
   getNewArray = () => {
@@ -113,13 +116,12 @@ class Quote extends Component{
     e.preventDefault();
 
     //new quote replace fetch
-    let listArr = this.state.listArr.slice(0, 10);
+    let listArr = this.state.listArr;
     let toReplace = listArr.indexOf(quote);
     axios.get('https://api.kanye.rest')
     .then((response) => {
-      let newList = this.state.listArr;
-      newList.splice(toReplace, 1, response.data.quote);
-      this.setState({listArr: newList})
+      listArr.splice(toReplace, 1, response.data.quote);
+      this.setState({listArr: listArr})
     })
 
     //send to favorites
@@ -170,7 +172,7 @@ class Quote extends Component{
             </div>
             <ul>
               {this.state.listArr.map((quote) =>
-                <li className="quote" title="Click to favorite" key={tempArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
+                <li className="quote" title="Click to favorite" key={this.state.listArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
                   <div className="card-panel">
                     <table>
                       <tbody>
@@ -219,7 +221,7 @@ class Quote extends Component{
               {this.state.listArr.sort(function(a, b){
                   return b.length - a.length;
                 }).map((quote) =>
-                <li className="quote" title="Click to favorite" key={tempArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
+                <li className="quote" title="Click to favorite" key={this.state.listArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
                   <div className="card-panel">
                     <table>
                       <tbody>
@@ -266,7 +268,7 @@ class Quote extends Component{
               {this.state.listArr.sort(function(a, b){
                   return a.length - b.length;
                 }).map((quote) =>
-                <li className="quote" title="Click to favorite" key={tempArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
+                <li className="quote" title="Click to favorite" key={this.state.listArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
                   <div className="card-panel">
                     <table>
                       <tbody>
