@@ -17,10 +17,11 @@ class Quote extends Component{
 
   componentWillMount(){
     this.getNewArray();
+    this.getNewList();
+
   }
 
   componentDidMount(){
-    this.getNewList();
   }
 
   getNewArray = () => {
@@ -112,7 +113,7 @@ class Quote extends Component{
     e.preventDefault();
 
     //new quote replace fetch
-    let listArr = this.state.listArr;
+    let listArr = this.state.listArr.slice(0, 10);
     let toReplace = listArr.indexOf(quote);
     axios.get('https://api.kanye.rest')
     .then((response) => {
