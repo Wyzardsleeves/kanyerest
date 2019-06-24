@@ -94,6 +94,7 @@
 
 .sort-funcs h5{
   display: inline-block;
+  margin: 0 0.3rem;
 }
 
 .stubborn{
@@ -103,4 +104,17 @@
 
 .sort-funcs li{
   display: inline-block;
+}
+
+.selected{
+  color: white;
+}
+.sortop{
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.sort-funcs .sortop:hover{
+  background-color: #b5d1ff;
 }

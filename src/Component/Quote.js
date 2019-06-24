@@ -20,23 +20,11 @@ class Quote extends Component{
   }
 
   componentDidMount(){
-    this.randNum();
     this.getNewList();
-  }
-
-  randNum = () => {
-    function num(){
-      let firstNum = Math.floor(Math.random() * 20000) + 1;
-      let secondNum = Math.floor(Math.random() * 1000) + 1;
-      let finalNum = firstNum.toString() + '-' + secondNum.toString();
-      return finalNum
-    }
-    console.log(num());
   }
 
   getNewArray = () => {
     this.addTotal();
-
     axios.get('https://api.kanye.rest')
     .then((response) => {
       let newArray = this.state.quoteArr.slice();
@@ -113,8 +101,7 @@ class Quote extends Component{
     .catch((error) => {
       console.log(error.message)
     })
-    console.log(this.state.quoteArr.length + " num quotes");
-    console.log(this.state.total + " num total");
+    this.setState({show: "quotes"});
   }
 
   getNewList = () => {
@@ -142,40 +129,17 @@ class Quote extends Component{
     this.setState({show: "favorites"})
   }
 
-  spitList = () => {
-    console.log(this.state.listArr);
-  }
-
-  sortFuncDesc = () => {
-    let newArray = this.state.listArr;
-    this.setState({listArr: newArray.sort(function(a, b){
-        return b.length - a.length;
-      })
-    })
-  }
-
-  sortFuncAsc = () => {
-    let newArray = this.state.listArr;
-    this.setState({listArr: newArray.sort(function(a, b){
-        return a.length - b.length;
-      })
-    })
-  }
-
   changeSort = (e, pass) => {
     e.preventDefault();
     this.setState({show: pass})
-    console.log(pass);
   }
-
-
 
   render(){
     let tempArr = this.state.quoteArr;
     let tempFav = this.state.favList;
     return(
       <div className="quote-stuff container">
-        <h3 onClick={this.sortFuncAsc}>Kanye Quotes</h3>
+        <h3>Kanye Quotes</h3>
         <button className="btn btn-large blue show-btn" onClick={this.showQuotes}>Go to Quotes</button>
         <button className="btn btn-large blue show-btn" onClick={this.showFav}>Go to Favorites ({this.state.favList.length})</button>
         <div className="card-panel grey lighten-4">
@@ -189,8 +153,8 @@ class Quote extends Component{
             <div>
               <ul className="sort-funcs">
                 <li><h5>Sort Order: </h5></li>
-                <li><h5 onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
-                <li><h5 onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
+                <li><h5 className="sortop" onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
+                <li><h5 className="sortop" onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
               </ul>
             </div>
             <ul>
@@ -236,8 +200,8 @@ class Quote extends Component{
             <div>
               <ul className="sort-funcs">
                 <li><h5>Sort Order: </h5></li>
-                <li><h5 onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
-                <li><h5 onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
+                <li><h5 className="sortop" onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
+                <li><h5 className="sortop selected blue lignten-4" onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
               </ul>
             </div>
             <ul>
@@ -283,8 +247,8 @@ class Quote extends Component{
             <div className="sort-funcs">
               <ul className="sort-funcs">
                 <li><h5>Sort Order: </h5></li>
-                <li><h5 onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
-                <li><h5 onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
+                <li><h5 className="sortop selected whie-text blue lignten-4" onClick={(e) => this.changeSort(e, "asc")}>ASC</h5></li>
+                <li><h5 className="sortop" onClick={(e) => this.changeSort(e, "desc")}>DESC</h5></li>
               </ul>
             </div>
             <ul>
@@ -330,7 +294,7 @@ class Quote extends Component{
               <h4>Favorites</h4>
               <ul>
                 {this.state.favList.map((quote) =>
-                  <li className="quote" title="Click to favorite"key={tempArr.indexOf(quote)} onClick={(e) => this.pushFav(e, quote)}>
+                  <li className="quote" title="Click to favorite"key={tempArr.indexOf(quote)}>
                     <div className="card-panel">
                       <table>
                         <tbody>
