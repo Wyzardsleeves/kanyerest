@@ -310,7 +310,7 @@ class Quote extends Component{
               }
               <ul>
                 {this.state.favList.map((quote) =>
-                  <li className="quote" title="Click to favorite"key={tempArr.indexOf(quote)}>
+                  <li className="quote" title="Click to favorite"key={this.state.listArr.indexOf(quote)}>
                     <div className="card-panel">
                       <table>
                         <tbody>
