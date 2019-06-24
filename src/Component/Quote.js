@@ -292,6 +292,9 @@ class Quote extends Component{
           {this.state.show === "favorites" &&
             <div>
               <h4>Favorites</h4>
+              {
+                this.state.favList.length < 1 && <h4>Add Favorites to view them here!</h4>
+              }
               <ul>
                 {this.state.favList.map((quote) =>
                   <li className="quote" title="Click to favorite"key={tempArr.indexOf(quote)}>
