@@ -95,7 +95,6 @@ class Quote extends Component{
       console.log(newArray);
       this.setState({quoteArr: newArray})
       this.setState({listArr: this.state.quoteArr.reverse().slice(0, 10)})
-
       return axios.get('https://api.kanye.rest');
     })
     .catch((error) => {
@@ -111,10 +110,21 @@ class Quote extends Component{
 
   pushFav = (e, quote) => {
     e.preventDefault();
+
+    //new quote replace fetch
+    let listArr = this.state.listArr;
+    let toReplace = listArr.indexOf(quote);
+    axios.get('https://api.kanye.rest')
+    .then((response) => {
+      let newList = this.state.listArr;
+      newList.splice(toReplace, 1, response.data.quote);
+      this.setState({listArr: newList})
+    })
+
+    //send to favorites
     let newArray = this.state.favList;
     newArray.push(quote);
     this.setState({favList: newArray});
-    console.log(this.state.favList);
   }
 
   addTotal = () => {
@@ -139,7 +149,7 @@ class Quote extends Component{
     let tempFav = this.state.favList;
     return(
       <div className="quote-stuff container">
-        <h3>Kanye Quotes</h3>
+        <h3 onClick={this.chopDown}>Kanye Quotes</h3>
         <button className="btn btn-large blue show-btn" onClick={this.showQuotes}>Go to Quotes</button>
         <button className="btn btn-large blue show-btn" onClick={this.showFav}>Go to Favorites ({this.state.favList.length})</button>
         <div className="card-panel grey lighten-4">
